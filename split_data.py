@@ -1,5 +1,10 @@
+'''
+This script will load the created csv with all the training data and split it into 5 folds.
+The split is done in a way that all crops of a recording are in a single fold to avoid leakage.
+Futhermore the class distribution should be as equal as possible based on the above boundary condition. 
+'''
+
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
 import numpy as np
 from tqdm import tqdm
