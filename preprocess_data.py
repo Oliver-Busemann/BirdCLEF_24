@@ -1,7 +1,7 @@
 '''
 In this script all raw audio files will be processed and saved as a specrogram and mel spectrogram for later use.
 Additionally dB-scaled ones will be created.
-If neccessary the 
+A csv will be created that contains all the necessary information. 
 '''
 
 import librosa
