@@ -3,9 +3,9 @@
 https://www.kaggle.com/competitions/birdclef-2024
 
 ### 1) preprocess_data
--From the raw audio data create spectrograms and save them to disk.
--This is done for each 5s sequence.
--The paths to the spectrograms/mel-spectrograms and additional information like the target and rating of the recording are saved as a csv.
+-From the raw audio data create spectrograms and save them to disk</br>
+-This is done for each 5s sequence</br>
+-The paths to the spectrograms/mel-spectrograms and additional information like the target and rating of the recording are saved as a csv</br>
 
 ### 2) split_data
 -The preprocessed data must now be split into 5-folds
