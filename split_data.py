@@ -8,12 +8,55 @@ import pandas as pd
 import os
 import numpy as np
 from tqdm import tqdm
+import concurrent.futures
 
+
+# if we only want to use the first and the last file instead of every 5s crop
+USE_LESS = True
 
 folder_data = '/home/olli/Projects/Kaggle/BirdCLEF/Data'
 
-DF = pd.read_csv(os.path.join(folder_data, 'Processed_5s_Spectrograms.csv'))
+DF = pd.read_csv(os.path.join(folder_data, 'Processed_5s_Spectrograms_Split_RemovedZerosMeldB.csv'))
 df = DF.copy()
+
+
+def find_min_max(target):
+
+    indices = []
+
+    files = df[df['target'] == target].file.values
+
+    for file in files:
+
+        df_filt = df[(df.target == target) & (df.file == file)]
+        
+        indices.append(df_filt.img_num.idxmin())
+
+        if len(files) > 1:
+            indices.append(df_filt.img_num.idxmax())
+
+    return indices
+
+
+if USE_LESS:
+
+    # find the indices of the rows to keep
+    keep_indices = []
+
+    # this took too long so we use all the available cores
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = [executor.submit(find_min_max, target) for target in df.target.unique()]
+
+        for future in concurrent.futures.as_completed(futures):
+            indices = future.result()
+            keep_indices.extend(indices)
+            
+
+    keep_indices = list(set(keep_indices))
+    df = df.loc[keep_indices]
+    
+    print(f'Reduced the files from {len(DF)} to {len(df)}')
+
 
 # now 5-folds need to be created; all files from one original recording should be in the same fold
 # additionally the distribution of classes should roughly be the same
@@ -45,4 +88,4 @@ for target in tqdm(df.target.unique()):
         # now assign the fold to the original df
         df.loc[(df['target'] == target) & (df['file'] == file), 'fold'] = fold
 
-df.to_csv('/home/olli/Projects/Kaggle/BirdCLEF/Data/Processed_5s_Spectrograms_Split.csv', index=False)
+df.to_csv('/home/olli/Projects/Kaggle/BirdCLEF/Data/Processed_5s_Spectrograms_Split_small.csv', index=False)
