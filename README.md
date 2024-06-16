@@ -26,4 +26,12 @@ https://www.kaggle.com/competitions/birdclef-2024
 -All metrics will be logged to tensorboard after each epoch
 
 ### 5) train
+-trian a 5-fold model: simply loop over each fold specified in the df and create a train/valid-df out of them
+-upsample minority classes with the WeightedRandomSampler from torch
+-upsample files the have a high rating (i.e. quality)
+-when using all files (not just the 1st and last from the raw audio) upsample the short audio sequences
+-finally print the cv-score after all 5 models are evaluated
+-if specified retrain on the full data and save the model weights (5 models are not feasible for inference)
 
+### 6) export_weights
+-for faster inference quantize the model weights with onnx and save them
