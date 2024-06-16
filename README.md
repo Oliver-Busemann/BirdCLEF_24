@@ -26,7 +26,7 @@ https://www.kaggle.com/competitions/birdclef-2024
 -All metrics will be logged to tensorboard after each epoch</br>
 
 ### 5) train
--trian a 5-fold model: simply loop over each fold specified in the df and create a train/valid-df out of them</br>
+-train a 5-fold model: simply loop over each fold specified in the df and create a train/valid-df out of it</br>
 -upsample minority classes with the WeightedRandomSampler from torch</br>
 -upsample files the have a high rating (i.e. quality)</br>
 -when using all files (not just the 1st and last from the raw audio) upsample the short audio sequences</br>
